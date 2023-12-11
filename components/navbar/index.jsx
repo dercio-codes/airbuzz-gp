@@ -292,6 +292,11 @@ const Navbar = () => {
               }}
               sx={{
                 background: "rgba(1,1,1,1)",
+                "&:hover":{
+
+                  color: "rgba(1,1,1,1)",
+                  background: "white",
+                }
                 color: "white",
                 width: "90%",
                 margin: "0 auto 32px auto",
