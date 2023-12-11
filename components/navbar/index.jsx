@@ -23,7 +23,7 @@ const navitems = ["Home", "Cigars", "Smoking", "About Us", "Accessories"];
 
 const Navbar = () => {
   const [openMobile, setOpenMobile] = React.useState(false);
-  const [openCart, setOpenCart] = React.useState(true);
+  const [openCart, setOpenCart] = React.useState(false);
 
   const toggleMobileDrawer = () => {
     setOpenMobile(!openMobile);
