@@ -1,4 +1,12 @@
-import { Grid, Button, Box, Typography, TextField } from "@mui/material";
+import {
+  Grid,
+  Button,
+  Box,
+  Typography,
+  TextField,
+  Drawer,
+  Stack,
+} from "@mui/material";
 import * as React from "react";
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
@@ -6,15 +14,295 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import DirectionsIcon from "@mui/icons-material/Directions";
+import CloseIcon from "@mui/icons-material/Close";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import Person2OutlinedIcon from "@mui/icons-material/Person2Outlined";
+import { PaystackButton, usePaystackPayment } from "react-paystack";
 
 const navitems = ["Home", "Cigars", "Smoking", "About Us", "Accessories"];
 
 const Navbar = () => {
+  const [openMobile, setOpenMobile] = React.useState(false);
+  const [openCart, setOpenCart] = React.useState(true);
+
+  const toggleMobileDrawer = () => {
+    setOpenMobile(!openMobile);
+  };
+  const toggleCartDrawer = () => {
+    setOpenCart(!openCart);
+  };
+
+  const config = {
+    reference: new Date().getTime().toString(),
+    email: "user@example.com",
+    currency: "ZAR",
+    amount: 20000, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
+    publicKey: "pk_test_6058257444af9947644858856f5b528456c465eb",
+  };
+
+  const initializePayment = usePaystackPayment(config);
+
+  // you can call this function anything
+  const handlePaystackSuccessAction = (reference) => {
+    // Implementation for whatever you want to do with reference and after success call.
+    console.log(reference);
+  };
+
+  // you can call this function anything
+  const handlePaystackCloseAction = () => {
+    // implementation for  whatever you want to do when the Paystack dialog closed.
+    console.log("closed");
+  };
+
+  const componentProps = {
+    ...config,
+    text: "Paystack Button Implementation",
+    onSuccess: (reference) => handlePaystackSuccessAction(reference),
+    onClose: handlePaystackCloseAction,
+  };
+
   return (
-    <Box sx={{ background: "white" }}>
+    <Box sx={{ background: "white", padding: { xs: "12px 0", lg: "0" } }}>
+      <Drawer onClose={toggleMobileDrawer} open={openMobile} anchor={"left"}>
+        <Box sx={{ height: "100vh", background: "white", width: "300px" }}>
+          <Typography
+            className="logo-font"
+            sx={{
+              fontSize: { xs: "28px", lg: "28px" },
+              fontWeight: "600",
+              margin: "21px auto",
+              color: "black",
+              textAlign: "center",
+            }}
+          >
+            {" "}
+            Barons Leaf{" "}
+          </Typography>
+          <Box
+            sx={{
+              width: "100%",
+              margin: "auto auto",
+              display: { xs: "flex", lg: "flex" },
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            {navitems.map((item, index) => {
+              return (
+                <Box
+                  sx={{
+                    width: "100%",
+                    "&:hover": {
+                      background: "rgba(1,1,1,.7)",
+                      color: "#BE9C22",
+                    },
+                  }}
+                >
+                  <Typography
+                    key={index}
+                    sx={{
+                      fontSize: "16px",
+                      padding: "8px 20%",
+                      margin: "1px 0",
+                      textAlign: "left",
+                      width: "100%",
+                      color: "black",
+                      "&:hover": {
+                        background: "rgba(1,1,1,.7)",
+                        color: "#BE9C22",
+                      },
+                    }}
+                  >
+                    {item}
+                  </Typography>
+                </Box>
+              );
+            })}
+          </Box>
+        </Box>
+      </Drawer>
+
+      <Drawer onClose={toggleCartDrawer} open={openCart} anchor={"right"}>
+        <Box
+          sx={{ height: "100vh", background: "rgba(1,1,1,.1)", width: "500px" }}
+        >
+          <Typography
+            className="logo-font"
+            sx={{
+              fontSize: { xs: "28px", lg: "28px" },
+              fontWeight: "600",
+              margin: "21px auto",
+              color: "black",
+              textAlign: "center",
+            }}
+          >
+            {" "}
+            CART{" "}
+          </Typography>
+          <Box
+            sx={{
+              width: "100%",
+              margin: "auto auto",
+              display: { xs: "flex", lg: "flex" },
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            {products.map((item, index) => {
+              return (
+                <Box
+                  key={index}
+                  sx={{
+                    width: "100%",
+                    minHeight: "100px",
+                    padding: "21px 12px",
+                    margin: "6px 0",
+                    border: "1px solid rgba(1,1,1,.2)",
+                    display: "flex",
+                    position: "relative",
+                    "&:hover": {
+                      background: "rgba(1,1,1,.2)",
+                      color: "#BE9C22",
+                    },
+                  }}
+                >
+                  <IconButton
+                    sx={{
+                      position: "absolute",
+                      top: "12px",
+                      right: "12px",
+                    }}
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                  <Box
+                    sx={{
+                      height: "100px",
+                      width: "100px",
+                      backgroundImage: `url(${item.imageURL})`,
+                      backgroundSize: "contain",
+                      backgroundPosition: "center",
+                    }}
+                  />
+                  <Stack sx={{ padding: "12px", flex: 1 }}>
+                    <Typography
+                      sx={{
+                        fontSize: { xs: "16px", lg: "16px" },
+                        fontWeight: "600",
+                        margin: "0px 00",
+                        color: "black",
+                        textAlign: "left",
+                      }}
+                    >
+                      {" "}
+                      {item.cigarName}{" "}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontSize: { xs: "16px", lg: "16px" },
+                        fontWeight: "300",
+                        margin: "6px 00",
+                        color: "black",
+                        textAlign: "left",
+                      }}
+                    >
+                      {" "}
+                      {item.company}{" "}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontSize: { xs: "16px", lg: "16px" },
+                        fontWeight: "300",
+                        margin: "6px 00",
+                        color: "black",
+                        textAlign: "left",
+                      }}
+                    >
+                      {"R"}
+                      {item.price}{" "}
+                    </Typography>
+                  </Stack>
+                  <Box
+                    sx={{
+                      width: "100px",
+                      height: "120px",
+                      display: "flex",
+                      alignItems: "center",
+                      jusitifyContent: "flex-end",
+                    }}
+                  >
+                    <TextField
+                      variant={"outlined"}
+                      type={"number"}
+                      sx={{
+                        width: "80%",
+                        margin: "0 auto",
+                        border: "1px solid rgba(1,1,1,.7)",
+                      }}
+                    />
+                  </Box>
+                </Box>
+              );
+            })}
+          </Box>
+
+          <Box
+            sx={{
+              p: "21px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: { xs: "30px" },
+                fontWeight: "600",
+                margin: "6px 00",
+                color: "black",
+                textAlign: "left",
+              }}
+            >
+              {"Total"}
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: { xs: "30px" },
+                fontWeight: "300",
+                margin: "6px 00",
+                color: "black",
+                textAlign: "left",
+              }}
+            >
+              {"R4895,95"}
+            </Typography>
+          </Box>
+
+          <Box
+            sx={{ display: "flex", alignItems: "center", marginBottom: "32px" }}
+          >
+            <Button
+              onClick={() => {
+                initializePayment(
+                  handlePaystackSuccessAction,
+                  handlePaystackCloseAction,
+                );
+              }}
+              sx={{
+                background: "rgba(1,1,1,1)",
+                color: "white",
+                width: "90%",
+                margin: "0 auto 32px auto",
+                padding: "21px",
+              }}
+            >
+              {"Checkout "}
+            </Button>
+          </Box>
+        </Box>
+      </Drawer>
       <Box
         sx={{
           height: "10vh",
@@ -24,7 +312,7 @@ const Navbar = () => {
           alignItems: "center",
           width: "90%",
           margin: "auto auto",
-          padding: "21px 12px",
+          padding: "21px 0",
         }}
       >
         <Button
@@ -32,7 +320,7 @@ const Navbar = () => {
             color: "white",
             background: "#BE9C22",
             fontSize: "12px",
-            padding: "12px 21px",
+            padding: { xs: "6px 16px", lg: "12px 21px" },
           }}
         >
           {" "}
@@ -44,9 +332,10 @@ const Navbar = () => {
             p: "2px 4px",
             display: "flex",
             alignItems: "center",
-            width: "500px",
+            width: { xs: "200px", lg: "500px" },
             border: "1px solid rgba(200,200,200,1)",
             borderRadius: "32px",
+            margin: "0 auto",
           }}
         >
           <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
@@ -54,7 +343,7 @@ const Navbar = () => {
           </IconButton>
           <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
           <InputBase
-            sx={{ ml: 1, flex: 1 }}
+            sx={{ ml: 1, flex: 1, fontSize: { xs: "12px" } }}
             placeholder="Search our premium catalog..."
             inputProps={{ "aria-label": "search google maps" }}
           />
@@ -64,7 +353,7 @@ const Navbar = () => {
             color: "white",
             background: "#BE9C22",
             fontSize: "12px",
-            padding: "12px 21px",
+            padding: { xs: "6px 16px", lg: "12px 21px" },
           }}
         >
           {" "}
@@ -86,12 +375,22 @@ const Navbar = () => {
             margin: "auto auto",
             display: "flex",
             alignItems: "center",
-            justifyContent: "space-evenly",
+            justifyContent: "space-between",
           }}
         >
+          <IconButton
+            onClick={toggleMobileDrawer}
+            sx={{ display: { xs: "flex", lg: "none" } }}
+          >
+            <MenuIcon />
+          </IconButton>
           <Typography
             className="logo-font"
-            sx={{ fontSize: "28px", fontWeight: "600", color: "black" }}
+            sx={{
+              fontSize: { xs: "18px", lg: "28px" },
+              fontWeight: "600",
+              color: "black",
+            }}
           >
             {" "}
             Barons Leaf{" "}
@@ -100,7 +399,7 @@ const Navbar = () => {
             sx={{
               width: "400px",
               margin: "auto auto",
-              display: "flex",
+              display: { xs: "none", lg: "flex" },
               alignItems: "center",
               justifyContent: "space-evenly",
             }}
@@ -134,294 +433,13 @@ const Navbar = () => {
               justifyContent: "space-between",
             }}
           >
-            <ShoppingCartOutlinedIcon sx={{ color: "rgba(1,1,1,.7)" }} />
-            <Person2OutlinedIcon sx={{ color: "rgba(1,1,1,.7)" }} />
+            <IconButton onClick={toggleCartDrawer}>
+              <ShoppingCartOutlinedIcon sx={{ color: "rgba(1,1,1,.7)" }} />
+            </IconButton>
+            <IconButton>
+              <Person2OutlinedIcon sx={{ color: "rgba(1,1,1,.7)" }} />
+            </IconButton>
           </Box>
-        </Box>
-      </Box>
-
-      <Box
-        sx={{
-          backgroundImage:
-            "url(https://www.mensjournal.com/.image/c_limit%2Ccs_srgb%2Cq_auto:good%2Cw_700/MTk2MTM3Mzc3MDgwMjIyODY1/beginnercigars1.webp)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundAttachment: "fixed",
-          height: "vh",
-        }}
-      >
-        <Box
-          sx={{
-            background: "rgba(1,1,1,.50)",
-            height: "85vh",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Typography
-            className="logo-font"
-            sx={{ fontSize: "50px", fontWeight: "600", color: "white" }}
-          >
-            {" "}
-            Barons Leaf{" "}
-          </Typography>
-          <Typography
-            sx={{
-              fontSize: "21px",
-
-              textAlign: "center",
-              width: "50%",
-              color: "white",
-            }}
-          >
-            {" "}
-            Where discerning indiviudals indulge in the finest cigars and the
-            art of refined smoking{" "}
-          </Typography>
-          <Button
-            variant="outlined"
-            sx={{
-              color: "white",
-              border: "1px solid white",
-              padding: "12px 34px",
-              margin: "12px 0",
-            }}
-          >
-            {" "}
-            Book Now{" "}
-          </Button>
-        </Box>
-      </Box>
-
-      <Box sx={{ width: "90%", margin: "21px auto" }}>
-        <Typography
-          sx={{ fontWeight: "300", textAlign: "center", fontSize: "20px" }}
-        >
-          {"TRENDING"}
-        </Typography>
-        <Box data-aos="fade-up">
-          <Typography
-            sx={{
-              fontWeight: "600",
-              textAlign: "center",
-              fontSize: "34px",
-              margin: "21px 0",
-            }}
-          >
-            {"Shop Our Popular Cigar Catalog"}
-          </Typography>
-        </Box>
-        <Box data-aos="fade-right">
-          <Grid container>
-            {products.map((product, index) => {
-              return (
-                <Grid key={index} item xs={6} md={3} sx={{ padding: "0 21px" }}>
-                  <Box
-                    sx={{
-                      height: 250,
-                      backgroundImage: `url(${product.imageURL})`,
-                      backgroundSize: "contain",
-                      backgroundPosition: "center",
-                      margin: "21px 0",
-                    }}
-                  />
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
-                      {product.cigarName}
-                    </Typography>
-                    <Typography sx={{ fontSize: "20px", textAlign: "right" }}>
-                      {" R"}
-                      {product.price}
-                    </Typography>
-                  </Box>
-                  <Typography sx={{ fontSize: "12px" }}>
-                    {" "}
-                    {product.company}
-                  </Typography>
-
-                  <Button
-                    sx={{
-                      border: "1px solid rgba(1,1,1,0.7)",
-                      color: "rgba(1,1,1,0.7)",
-                      borderRadius: "32px",
-                      width: "100%",
-                      margin: "21px auto",
-                    }}
-                  >
-                    {" "}
-                    Add To Cart{" "}
-                  </Button>
-                </Grid>
-              );
-            })}
-          </Grid>
-        </Box>
-
-        <Box
-          sx={{
-            backgroundImage: `url("https://img.freepik.com/premium-photo/glass-whiskey-with-ice-wooden-table-steaming-cuban-cigar-bottle-whiskey-smoky-atmosphere-night-bar_250469-9147.jpg?size=626&ext=jpg&ga=GA1.1.391371561.1702252160&semt=ais")`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundAttachment: "fixed",
-            height: "50vh",
-          }}
-        >
-          <Box
-            sx={{
-              background: "rgba(1,1,1,.50)",
-              height: "50vh",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Box data-aos="fade-up">
-              <Box sx={{ display: "flex", width: "75%" }}>
-                <Typography sx={{ fontWeight: "600", fontSize: "50px" }}>
-                  {"10%"}
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: "55px",
-                    fontWeight: "600",
-                    margin: "0 12px",
-                    color: "white",
-                  }}
-                >
-                  {"OFF"}
-                </Typography>
-                <br />
-              </Box>
-              <Box sx={{ display: "flex", width: "75%" }}>
-                <Typography
-                  sx={{
-                    fontSize: "30px",
-                    fontWeight: "300",
-                    margin: "0 12px",
-                    color: "white",
-                  }}
-                >
-                  {"Make the most of your #scandlexperience"}
-                </Typography>
-              </Box>
-            </Box>
-          </Box>
-        </Box>
-      </Box>
-      <Box
-        sx={{
-          background: "#1E1A19",
-          minHeight: "100vh",
-          margin: "32px 0",
-          padding: "32px 0",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Typography
-          sx={{
-            fontWeight: "300",
-            color: "rgba(200,200,200,.7)",
-
-            textAlign: "center",
-            fontSize: "20px",
-          }}
-        >
-          {"Crafted with excellence"}
-        </Typography>
-        <Box data-aos="fade-up">
-          <Typography
-            sx={{
-              fontSize: "38px",
-              width: "60%",
-              textAlign: "center",
-              margin: "28px auto",
-              fontWeight: "600",
-              color: "rgba(255,255,255,.9)",
-            }}
-          >
-            {
-              "Premium Cigars & Accessories , For Discerning Gentlemen and Ladies of Refined Taste."
-            }
-          </Typography>
-        </Box>
-        <Typography
-          sx={{
-            fontWeight: "300",
-            color: "rgba(200,200,200,.7)",
-            textAlign: "center",
-            fontSize: "16px",
-          }}
-        >
-          {"Have a look at a section of what we offer"}
-        </Typography>
-
-        <Box sx={{ width: "50%", minHeight: "50vh", background: "" }}>
-          <Grid container>
-            {companies.map((product, index) => {
-              return (
-                <Grid
-                  key={index}
-                  item
-                  xs={12}
-                  md={5.5}
-                  sx={{
-                    padding: "12px",
-                    background: "rgba(255,255,255,1)",
-                    margin: "32px auto",
-                  }}
-                >
-                  <Box data-aos="zoom-in">
-                    <Box
-                      sx={{
-                        height: 200,
-                        backgroundImage: `url(${product.imageURL})`,
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                        margin: "12px auto",
-                      }}
-                    />
-                  </Box>
-
-                  <Box data-aos="fade-down">
-                    <Typography
-                      sx={{
-                        fontWeight: "600",
-                        fontSize: "16px",
-                        textAlign: "center",
-                        margin: "12px 0",
-                      }}
-                    >
-                      {product.cigarName}
-                    </Typography>
-                  </Box>
-
-                  <Box data-aos="fade-up">
-                    <Typography
-                      sx={{
-                        fontSize: "13px",
-                        textAlign: "center",
-                        color: "rgba(1,1,1,.7)",
-                      }}
-                    >
-                      {" "}
-                      {product.description}
-                    </Typography>
-                  </Box>
-                </Grid>
-              );
-            })}
-          </Grid>
         </Box>
       </Box>
     </Box>
