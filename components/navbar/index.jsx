@@ -91,6 +91,7 @@ const Navbar = () => {
             {navitems.map((item, index) => {
               return (
                 <Box
+                  key={index}
                   sx={{
                     width: "100%",
                     "&:hover": {
