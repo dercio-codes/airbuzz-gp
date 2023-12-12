@@ -18,12 +18,54 @@ import CloseIcon from "@mui/icons-material/Close";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import Person2OutlinedIcon from "@mui/icons-material/Person2Outlined";
 import { PaystackButton, usePaystackPayment } from "react-paystack";
+import { CartContext } from "./../../pages/_app";
+import { toast } from "react-toastify";
 
-const navitems = ["Home", "Cigars", "Smoking", "About Us", "Accessories"];
+const navitems = ["Home", "Cigars", "Smoking", "Accessories", "About Us"];
 
 const Navbar = () => {
   const [openMobile, setOpenMobile] = React.useState(false);
   const [openCart, setOpenCart] = React.useState(false);
+  const [total, setTotal] = React.useState(0);
+  const { cart, setCart } = React.useContext(CartContext);
+
+  const removeFromCartHandler = (product) => {
+    const tempCart = [...cart]; // Clone the existing cart
+
+    // Find the index of the product in the cart
+    const index = tempCart.findIndex(
+      (tempProduct) =>
+        tempProduct.cigarName.toLowerCase().trim() ===
+        product.cigarName.toLowerCase().trim(),
+    );
+
+    if (index !== -1) {
+      // Remove the product from tempCart using splice
+      tempCart.splice(index, 1);
+      toast.error(`Removed ${product.cigarName} from cart.`, {
+        theme: "light",
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+      });
+    }
+
+    setCart(tempCart);
+    console.log(tempCart);
+  };
+
+  const calculateTotalSum = () => {
+    const totalSum = cart.reduce(
+      (sum, product) => sum + product.price * product.quantity,
+      0,
+    );
+
+    setTotal(totalSum);
+  };
+
+  React.useEffect(() => {
+    calculateTotalSum();
+  }, [cart]);
 
   const toggleMobileDrawer = () => {
     setOpenMobile(!openMobile);
@@ -76,7 +118,7 @@ const Navbar = () => {
             }}
           >
             {" "}
-            Barons Leaf{" "}
+            Tobacco Mart{" "}
           </Typography>
           <Box
             sx={{
@@ -126,7 +168,12 @@ const Navbar = () => {
 
       <Drawer onClose={toggleCartDrawer} open={openCart} anchor={"right"}>
         <Box
-          sx={{ height: "100vh", background: "rgba(1,1,1,.1)", width: "500px" }}
+          sx={{
+            height: "100vh",
+            background: "rgba(1,1,1,.1)",
+            width: { md: "350px", lg: "500px" },
+            position: "relative",
+          }}
         >
           <Typography
             className="logo-font"
@@ -141,6 +188,16 @@ const Navbar = () => {
             {" "}
             CART{" "}
           </Typography>
+          <IconButton
+            onClick={toggleCartDrawer}
+            sx={{
+              position: "absolute",
+              top: "12px",
+              right: "12px",
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
           <Box
             sx={{
               width: "100%",
@@ -151,102 +208,145 @@ const Navbar = () => {
               justifyContent: "center",
             }}
           >
-            {products.map((item, index) => {
-              return (
-                <Box
-                  key={index}
-                  sx={{
-                    width: "100%",
-                    minHeight: "100px",
-                    padding: "21px 12px",
-                    margin: "6px 0",
-                    border: "1px solid rgba(1,1,1,.2)",
-                    display: "flex",
-                    position: "relative",
-                    "&:hover": {
-                      background: "rgba(1,1,1,.2)",
-                      color: "#BE9C22",
-                    },
-                  }}
-                >
-                  <IconButton
-                    sx={{
-                      position: "absolute",
-                      top: "12px",
-                      right: "12px",
-                    }}
-                  >
-                    <CloseIcon />
-                  </IconButton>
+            {cart &&
+              cart.map((item, index) => {
+                return (
                   <Box
+                    key={index}
                     sx={{
-                      height: "100px",
-                      width: "100px",
-                      backgroundImage: `url(${item.imageURL})`,
-                      backgroundSize: "contain",
-                      backgroundPosition: "center",
-                    }}
-                  />
-                  <Stack sx={{ padding: "12px", flex: 1 }}>
-                    <Typography
-                      sx={{
-                        fontSize: { xs: "16px", lg: "16px" },
-                        fontWeight: "600",
-                        margin: "0px 00",
-                        color: "black",
-                        textAlign: "left",
-                      }}
-                    >
-                      {" "}
-                      {item.cigarName}{" "}
-                    </Typography>
-                    <Typography
-                      sx={{
-                        fontSize: { xs: "16px", lg: "16px" },
-                        fontWeight: "300",
-                        margin: "6px 00",
-                        color: "black",
-                        textAlign: "left",
-                      }}
-                    >
-                      {" "}
-                      {item.company}{" "}
-                    </Typography>
-                    <Typography
-                      sx={{
-                        fontSize: { xs: "16px", lg: "16px" },
-                        fontWeight: "300",
-                        margin: "6px 00",
-                        color: "black",
-                        textAlign: "left",
-                      }}
-                    >
-                      {"R"}
-                      {item.price}{" "}
-                    </Typography>
-                  </Stack>
-                  <Box
-                    sx={{
-                      width: "100px",
-                      height: "120px",
+                      width: "100%",
+                      minHeight: "100px",
+                      padding: "21px 12px",
+                      margin: "6px 0",
+                      border: "1px solid rgba(1,1,1,.2)",
                       display: "flex",
-                      alignItems: "center",
-                      jusitifyContent: "flex-end",
+                      position: "relative",
+                      "&:hover": {
+                        background: "rgba(1,1,1,.2)",
+                        color: "#BE9C22",
+                      },
                     }}
                   >
-                    <TextField
-                      variant={"outlined"}
-                      type={"number"}
+                    <IconButton
+                      onClick={() => {
+                        removeFromCartHandler(item);
+                      }}
                       sx={{
-                        width: "80%",
-                        margin: "0 auto",
-                        border: "1px solid rgba(1,1,1,.7)",
+                        position: "absolute",
+                        top: "12px",
+                        right: "12px",
+                      }}
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                    <Box
+                      sx={{
+                        height: "100px",
+                        width: "100px",
+                        backgroundImage: `url(${item.imageURL})`,
+                        backgroundSize: "contain",
+                        backgroundPosition: "center",
                       }}
                     />
+                    <Stack sx={{ padding: "12px", flex: 1 }}>
+                      <Typography
+                        sx={{
+                          fontSize: { xs: "16px", lg: "16px" },
+                          fontWeight: "600",
+                          margin: "0px 00",
+                          color: "black",
+                          textAlign: "left",
+                        }}
+                      >
+                        {" "}
+                        {item.cigarName}{" "}
+                      </Typography>
+                      <Typography
+                        sx={{
+                          fontSize: { xs: "16px", lg: "16px" },
+                          fontWeight: "300",
+                          margin: "6px 00",
+                          color: "black",
+                          textAlign: "left",
+                        }}
+                      >
+                        {" "}
+                        {item.company}{" "}
+                      </Typography>
+                      <Typography
+                        sx={{
+                          fontSize: { xs: "16px", lg: "16px" },
+                          fontWeight: "300",
+                          margin: "6px 00",
+                          color: "black",
+                          textAlign: "left",
+                        }}
+                      >
+                        {"R"}
+                        {item.price}{" "}
+                      </Typography>
+                    </Stack>
+                    <Box
+                      sx={{
+                        width: "100px",
+                        height: "120px",
+                        display: "flex",
+                        alignItems: "center",
+                        jusitifyContent: "flex-end",
+                      }}
+                    >
+                      <TextField
+                        variant={"outlined"}
+                        type={"number"}
+                        sx={{
+                          width: "80%",
+                          margin: "0 auto",
+                          border: "1px solid rgba(1,1,1,.7)",
+                        }}
+                      />
+                    </Box>
                   </Box>
-                </Box>
-              );
-            })}
+                );
+              })}
+            <Box
+              sx={{
+                width: "350px",
+                height: "400px",
+                display: cart.length === 0 ? "flex" : "none",
+                alignItems: "center",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
+            >
+              <Box
+                sx={{
+                  width: "150px",
+                  margin: "0 auto",
+                  height: "150px",
+                  // backgroundImage: `url("/empty-cart.gif")`,
+                  backgroundImage:
+                    "url(https://cdn-icons-png.flaticon.com/128/11329/11329060.png)",
+                  backgroundSize: "contain",
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "center",
+                }}
+              ></Box>
+              <Typography sx={{ margin: "21px 0" }}>
+                Your Cart Is Empty
+              </Typography>
+              <Button
+                onClick={toggleCartDrawer}
+                sx={{
+                  color: "white",
+                  background: "#BE9C22",
+                  fontSize: { xs: "10px", lg: "12px" },
+                  padding: { xs: "12px 16px", lg: "12px 21px" },
+                }}
+              >
+                {" "}
+                Start Shopping{" "}
+              </Button>
+            </Box>
           </Box>
 
           <Box
@@ -277,7 +377,8 @@ const Navbar = () => {
                 textAlign: "left",
               }}
             >
-              {"R4895,95"}
+              {"R"}
+              {total}
             </Typography>
           </Box>
 
@@ -310,61 +411,95 @@ const Navbar = () => {
       </Drawer>
       <Box
         sx={{
-          height: "10vh",
+          height: { xs: "7vh", lg: "10vh" },
           background: "",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
           width: "90%",
           margin: "auto auto",
-          padding: "21px 0",
+          padding: "12px 0",
         }}
       >
-        <Button
+        <Box
           sx={{
-            color: "white",
-            background: "#BE9C22",
-            fontSize: "12px",
-            padding: { xs: "6px 16px", lg: "12px 21px" },
-          }}
-        >
-          {" "}
-          Call Us{" "}
-        </Button>
-        <Paper
-          elevation={0}
-          sx={{
-            p: "2px 4px",
+            height: "100%",
+            flex: "0.5",
             display: "flex",
             alignItems: "center",
-            width: { xs: "200px", lg: "500px" },
-            border: "1px solid rgba(200,200,200,1)",
-            borderRadius: "32px",
-            margin: "0 auto",
+            justifyContent: "flex-start",
           }}
         >
-          <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
-            <SearchIcon />
-          </IconButton>
-          <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-          <InputBase
-            sx={{ ml: 1, flex: 1, fontSize: { xs: "12px" } }}
-            placeholder="Search our premium catalog..."
-            inputProps={{ "aria-label": "search google maps" }}
-          />
-        </Paper>
-        <Button
+          <Button
+            sx={{
+              color: "white",
+              background: "#BE9C22",
+              fontSize: { xs: "10px", lg: "12px" },
+              padding: { xs: "6px 16px", lg: "12px 21px" },
+            }}
+          >
+            {" "}
+            Call{" "}
+          </Button>
+        </Box>
+
+        <Box
           sx={{
-            color: "white",
-            background: "#BE9C22",
-            fontSize: "12px",
-            padding: { xs: "6px 16px", lg: "12px 21px" },
+            height: "100%",
+            flex: "2",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+            padding: "0 12px",
           }}
         >
-          {" "}
-          Login{" "}
-        </Button>
+          <Paper
+            elevation={0}
+            sx={{
+              p: "2px 4px",
+              display: "flex",
+              alignItems: "center",
+              width: { xs: "160px", md: "350px", lg: "500px" },
+              border: "1px solid rgba(200,200,200,1)",
+              borderRadius: "32px",
+              margin: "0 auto",
+            }}
+          >
+            <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
+              <SearchIcon sx={{ fontSize: { xs: "12px", lg: "21px" } }} />
+            </IconButton>
+            <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+            <InputBase
+              sx={{ ml: 1, flex: 1, fontSize: { xs: "12px" } }}
+              placeholder="Search our premium catalog..."
+              inputProps={{ "aria-label": "search google maps" }}
+            />
+          </Paper>
+        </Box>
+
+        <Box
+          sx={{
+            height: "100%",
+            flex: "0.5",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-end",
+          }}
+        >
+          <Button
+            sx={{
+              color: "white",
+              background: "#BE9C22",
+              fontSize: "12px",
+              padding: { xs: "6px 16px", lg: "12px 21px" },
+            }}
+          >
+            {" "}
+            Login{" "}
+          </Button>
+        </Box>
       </Box>
+      <Divider sx={{ width: "75%", margin: "12px auto" }} />
       <Box
         sx={{
           background: "white",
@@ -375,7 +510,7 @@ const Navbar = () => {
       >
         <Box
           sx={{
-            height: "10vh",
+            height: { xs: "7vh", lg: "10vh" },
             width: "90%",
             margin: "auto auto",
             display: "flex",
@@ -383,67 +518,109 @@ const Navbar = () => {
             justifyContent: "space-between",
           }}
         >
-          <IconButton
-            onClick={toggleMobileDrawer}
-            sx={{ display: { xs: "flex", lg: "none" } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            className="logo-font"
-            sx={{
-              fontSize: { xs: "18px", lg: "28px" },
-              fontWeight: "600",
-              color: "black",
-            }}
-          >
-            {" "}
-            Barons Leaf{" "}
-          </Typography>
           <Box
             sx={{
-              width: "400px",
-              margin: "auto auto",
-              display: { xs: "none", lg: "flex" },
+              height: "100%",
+              flex: "0.5",
+              background: "",
+              display: "flex",
               alignItems: "center",
               justifyContent: "space-evenly",
             }}
           >
-            {navitems.map((item, index) => {
-              return (
-                <Typography
-                  key={index}
-                  sx={{
-                    fontSize: "16px",
+            <IconButton
+              onClick={toggleMobileDrawer}
+              sx={{
+                display: { xs: "flex", lg: "none" },
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
 
-                    textAlign: "center",
-                    width: "50%",
-                    color: "black",
-                    "&:hover": {
-                      color: "#BE9C22",
-                    },
-                  }}
-                >
-                  {item}
-                </Typography>
-              );
-            })}
+            <Typography
+              className="logo-font"
+              sx={{
+                display: { xs: "none", lg: "flex" },
+                fontSize: { xs: "18px", lg: "28px" },
+                fontWeight: "600",
+                color: "black",
+              }}
+            >
+              {" "}
+              Tobacco Mart{" "}
+            </Typography>
           </Box>
           <Box
             sx={{
-              width: "80px",
-              height: "10vh",
+              height: "100%",
+              flex: "2",
+              background: "",
               display: "flex",
               alignItems: "center",
-              justifyContent: "space-between",
+              justifyContent: "space-evenly",
             }}
           >
-            <IconButton onClick={toggleCartDrawer}>
-              <ShoppingCartOutlinedIcon sx={{ color: "rgba(1,1,1,.7)" }} />
-            </IconButton>
-            <IconButton>
-              <Person2OutlinedIcon sx={{ color: "rgba(1,1,1,.7)" }} />
-            </IconButton>
+            <Typography
+              className="logo-font"
+              sx={{
+                display: { xs: "flex", lg: "none" },
+                fontSize: { xs: "18px", lg: "28px" },
+                fontWeight: "600",
+                color: "black",
+                textAlign: "center",
+              }}
+            >
+              {" "}
+              Tobacco Mart{" "}
+            </Typography>
+            <Box
+              sx={{
+                width: "80%",
+                height: "100%",
+                margin: "auto auto",
+                display: { xs: "none", lg: "flex" },
+                alignItems: "center",
+                justifyContent: "space-evenly",
+              }}
+            >
+              {navitems.map((item, index) => {
+                return (
+                  <Typography
+                    key={index}
+                    sx={{
+                      fontSize: "1s6px",
+
+                      textAlign: "center",
+                      width: "50%",
+                      color: "black",
+                      "&:hover": {
+                        color: "#BE9C22",
+                      },
+                    }}
+                  >
+                    {item}
+                  </Typography>
+                );
+              })}
+            </Box>
+          </Box>
+          <Box sx={{ height: "100%", flex: "0.5", background: "" }}>
+            <Box
+              sx={{
+                width: "100%",
+                height: { xs: "7vh", lg: "10vh" },
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <IconButton onClick={toggleCartDrawer}>
+                <ShoppingCartOutlinedIcon sx={{ color: "rgba(1,1,1,.7)" }} />
+              </IconButton>
+              <IconButton>
+                <Person2OutlinedIcon sx={{ color: "rgba(1,1,1,.7)" }} />
+              </IconButton>
+            </Box>
           </Box>
         </Box>
       </Box>
