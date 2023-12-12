@@ -481,29 +481,6 @@ const Hero = () => {
             }
           </Typography>
         </Box>
-        <Box data-aos="fade-up">
-          <Typography
-            sx={{
-              fontWeight: "300",
-              color: "rgba(200,200,200,.7)",
-              textAlign: "center",
-              fontSize: "16px",
-            }}
-          >
-            {"Have a look at a section of what we offer"}
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            width: "100px",
-            height: "100px",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            backgroundImage:
-              "https://img.freepik.com/free-vector/vintage-human-skull-concept_225004-1268.jpg?size=626&ext=jpg&ga=GA1.1.391371561.1702252160&semt=ais",
-          }}
-        />
 
         <Box
           sx={{
@@ -1000,6 +977,67 @@ const Hero = () => {
             {" "}
             Shop Now{" "}
           </Button>
+        </Box>
+      </Box>
+
+      <Box
+        sx={{
+          minHeight: "150px",
+          background: "#1E1A19",
+          padding: "32px 0",
+        }}
+      >
+        <Typography
+          className="logo-font"
+          sx={{
+            fontSize: { xs: "28px", lg: "28px" },
+            fontWeight: "600",
+            margin: "21px auto",
+            color: "#eee",
+            textAlign: "center",
+          }}
+        >
+          {" "}
+          Tobacco Mart{" "}
+        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            width: { xs: "100%", lg: "90%" },
+            margin: "0 auto",
+            justifyContent: "space-evenly",
+            flexDirection: { xs: "column", lg: "row" },
+            color: "#eee",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <TextField
+              sx={{ margin: "12px 0" }}
+              // helperText="Fill in this form to join our mailing list."
+            />
+            <Button
+              sx={{
+                background: "#111",
+                color: "#eee",
+                height: "100%",
+                padding: "16px 0",
+                // marginBottom: "6px",
+              }}
+            >
+              Submit
+            </Button>
+          </Box>
+          <Typography sx={{ margin: "6px 0" }}>
+            Copyright 2023 Atomus Dev
+          </Typography>
+          <Typography sx={{ margin: "6px 0" }}>Privacy Policy</Typography>
+          <Typography sx={{ margin: "6px 0" }}>Terns and Conditions</Typography>
         </Box>
       </Box>
     </Box>
