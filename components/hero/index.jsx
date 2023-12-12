@@ -144,7 +144,7 @@ const Hero = () => {
               margin: "21px 0",
             }}
           >
-            {"Shop Our Popular Cigar Catalog"}
+            {"Shop Our Popular Cigar Accessories"}
           </Typography>
         </Box>
         <Box data-aos="fade-right">
@@ -228,7 +228,7 @@ const Hero = () => {
               margin: "21px 0",
             }}
           >
-            {"Shop Our Popular Cigar Catalog"}
+            {"Shop Our Popular Vapes"}
           </Typography>
         </Box>
 
