@@ -444,8 +444,9 @@ const Hero = () => {
         </Box>
       </Box>
       <Box
+        className="rasta-body"
         sx={{
-          background: "#1E1A19",
+          // background: "#1E1A19",
           minHeight: "100vh",
           margin: "32px 0",
           padding: "32px 0",
