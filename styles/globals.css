@@ -17,7 +17,17 @@ body {
     Helvetica Neue,
     sans-serif;
 }
+.rastafarian-green {
+  background: #018a2d;
+}
 
+.rastafarian-yellow {
+  background: #fcde03;
+}
+
+.rastafarian-red {
+  background: #d40000;
+}
 a {
   color: inherit;
   text-decoration: none;

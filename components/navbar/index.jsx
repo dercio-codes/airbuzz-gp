@@ -107,7 +107,7 @@ const Navbar = () => {
     <Box sx={{ background: "white", padding: { xs: "12px 0", lg: "0" } }}>
       <Drawer onClose={toggleMobileDrawer} open={openMobile} anchor={"left"}>
         <Box sx={{ height: "100vh", background: "white", width: "300px" }}>
-          <Typography
+          {/* <Typography
             className="logo-font"
             sx={{
               fontSize: { xs: "28px", lg: "28px" },
@@ -118,8 +118,17 @@ const Navbar = () => {
             }}
           >
             {" "}
-            Tobacco Mart{" "}
-          </Typography>
+            AirBuzz{" "}
+          </Typography> */}
+          <Box
+            sx={{
+              width: "100px",
+              height: "50px",
+              backgroundImage: 'url("/logo-transparent.png")',
+              backgroundSize: "contain",
+              backgroundPosition: "center",
+            }}
+          />
           <Box
             sx={{
               width: "100%",
@@ -431,9 +440,10 @@ const Navbar = () => {
           }}
         >
           <Button
+            className="rastafarian-green"
             sx={{
               color: "white",
-              background: "#BE9C22",
+              // background: "#BE9C22",
               fontSize: { xs: "10px", lg: "12px" },
               padding: { xs: "6px 16px", lg: "12px 21px" },
             }}
@@ -487,9 +497,10 @@ const Navbar = () => {
           }}
         >
           <Button
+            className="rastafarian-yellow"
             sx={{
               color: "white",
-              background: "#BE9C22",
+              // background: "#BE9C22",
               fontSize: "12px",
               padding: { xs: "6px 16px", lg: "12px 21px" },
             }}
@@ -537,7 +548,7 @@ const Navbar = () => {
               <MenuIcon />
             </IconButton>
 
-            <Typography
+            {/* <Typography
               className="logo-font"
               sx={{
                 display: { xs: "none", lg: "flex" },
@@ -547,8 +558,19 @@ const Navbar = () => {
               }}
             >
               {" "}
-              Tobacco Mart{" "}
-            </Typography>
+              AirBuzz{" "}
+            </Typography> */}
+            <Box
+              sx={{
+                width: "150px",
+                display: { xs: "none", lg: "flex" },
+                height: "80px",
+                backgroundImage: 'url("/logo-transparent.png")',
+                backgroundSize: "contain",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+              }}
+            />
           </Box>
           <Box
             sx={{
@@ -560,7 +582,7 @@ const Navbar = () => {
               justifyContent: "space-evenly",
             }}
           >
-            <Typography
+            {/* <Typography
               className="logo-font"
               sx={{
                 display: { xs: "flex", lg: "none" },
@@ -571,8 +593,19 @@ const Navbar = () => {
               }}
             >
               {" "}
-              Tobacco Mart{" "}
-            </Typography>
+              AirBuzz{" "}
+            </Typography> */}
+            <Box
+              sx={{
+                width: "150px",
+                height: "80px",
+                backgroundImage: 'url("/logo-transparent.png")',
+                display: { xs: "flex", lg: "none" },
+                backgroundSize: "contain",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+              }}
+            />
             <Box
               sx={{
                 width: "80%",
