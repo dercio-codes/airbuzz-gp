@@ -625,6 +625,7 @@ const Hero = () => {
             of refined smoking{" "}
           </Typography>
           <Button
+            className="rastafarian-red"
             variant="outlined"
             sx={{
               color: "white",
