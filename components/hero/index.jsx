@@ -148,11 +148,11 @@ const Hero = () => {
           </Typography>
         </Box>
 
-        <Box data-aos="fade-right">
+        <Box data-aos="fade-down">
           <Grid container>
-            {epens.map((product, index) => {
+            {accessosries.map((product, index) => {
               return (
-                <Grid key={index} item xs={6} md={3} sx={{ padding: "0 21px" }}>
+                <Grid key={index} item xs={6} md={3} sx={{ padding: "0 12px" }}>
                   <Box
                     sx={{
                       height: 250,
@@ -178,13 +178,22 @@ const Hero = () => {
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "flex-end",
+                      p: "0",
                     }}
                   >
                     <Typography sx={{ fontSize: "12px" }}>
                       {" "}
                       {product.company}
                     </Typography>
-                    <Typography sx={{ fontSize: "20px", textAlign: "right" }}>
+                    <Typography
+                      sx={{
+                        fontSize: "20px",
+                        margin: "6px 0 0 0",
+                        padding: "0",
+                        fontWeight: "600",
+                        textAlign: "right",
+                      }}
+                    >
                       {" R"}
                       {product.price}
                     </Typography>
@@ -312,11 +321,11 @@ const Hero = () => {
           </Typography>
         </Box>
 
-        <Box data-aos="fade-down">
+        <Box data-aos="fade-right">
           <Grid container>
-            {accessosries.map((product, index) => {
+            {epens.map((product, index) => {
               return (
-                <Grid key={index} item xs={6} md={3} sx={{ padding: "0 12px" }}>
+                <Grid key={index} item xs={6} md={3} sx={{ padding: "0 21px" }}>
                   <Box
                     sx={{
                       height: 250,
@@ -342,22 +351,13 @@ const Hero = () => {
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "flex-end",
-                      p: "0",
                     }}
                   >
                     <Typography sx={{ fontSize: "12px" }}>
                       {" "}
                       {product.company}
                     </Typography>
-                    <Typography
-                      sx={{
-                        fontSize: "20px",
-                        margin: "6px 0 0 0",
-                        padding: "0",
-                        fontWeight: "600",
-                        textAlign: "right",
-                      }}
-                    >
+                    <Typography sx={{ fontSize: "20px", textAlign: "right" }}>
                       {" R"}
                       {product.price}
                     </Typography>
