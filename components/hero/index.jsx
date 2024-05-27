@@ -626,7 +626,7 @@ const Hero = () => {
           </Typography>
           <Button
             className="rastafarian-red"
-            variant="outlined"
+            // variant="outlined"
             sx={{
               color: "white",
               border: "1px solid white",
