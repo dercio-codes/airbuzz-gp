@@ -21,7 +21,7 @@ import { PaystackButton, usePaystackPayment } from "react-paystack";
 import { CartContext } from "./../../pages/_app";
 import { toast } from "react-toastify";
 
-const navitems = ["Home", "Cigars", "Smoking", "Accessories", "About Us"];
+const navitems = ["Home", "Vape", "Smoking", "Accessories", "About Us"];
 
 const Navbar = () => {
   const [openMobile, setOpenMobile] = React.useState(false);
@@ -664,7 +664,7 @@ const Navbar = () => {
 const companies = [
   {
     cigarName: "Padilla Reserva 1932 Robusto",
-    company: "Padilla Cigars",
+    company: "Padilla Vape",
     imageURL:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyiP3NuqcQ5dlc_kHmzda1UdviAigNsozqMw&usqp=CAU",
     description:

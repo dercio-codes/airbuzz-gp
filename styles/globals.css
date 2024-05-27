@@ -18,15 +18,15 @@ body {
     sans-serif;
 }
 .rastafarian-green {
-  background: #018a2d;
+  background: #018a2d !important;
 }
 
 .rastafarian-yellow {
-  background: #fcde03;
+  background: #fcde03 !important;
 }
 
 .rastafarian-red {
-  background: #d40000;
+  background: #d40000 !important;
 }
 a {
   color: inherit;

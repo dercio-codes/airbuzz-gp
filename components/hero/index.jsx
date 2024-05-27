@@ -21,7 +21,7 @@ import { GooSpinner } from "react-spinners-kit";
 import { PropagateLoader } from "react-spinners";
 import { toast } from "react-toastify";
 
-const navitems = ["Home", "Cigars", "Smoking", "About Us", "Accessories"];
+const navitems = ["Home", "Vape", "Smoking", "About Us", "Accessories"];
 
 const Hero = () => {
   const { cart, setCart } = React.useContext(CartContext);
@@ -621,8 +621,8 @@ const Hero = () => {
             }}
           >
             {" "}
-            Where discerning indiviudals indulge in the finest cigars and the
-            art of refined smoking{" "}
+            Where discerning indiviudals indulge in the finest Vape and the art
+            of refined smoking{" "}
           </Typography>
           <Button
             variant="outlined"
@@ -884,7 +884,7 @@ const Hero = () => {
                   }}
                 >
                   {" "}
-                  Where discerning indiviudals indulge in the finest cigars and
+                  Where discerning indiviudals indulge in the finest Vape and
                   the art of refined smoking{" "}
                 </Typography>
                 <Button
@@ -1046,7 +1046,7 @@ const Hero = () => {
 const companies = [
   {
     cigarName: "Padilla Reserva 1932 Robusto",
-    company: "Padilla Cigars",
+    company: "Padilla Vape",
     imageURL: "/shihsa-image.jpg",
     description:
       "Experience the bold power of espresso, dark chocolate, and spice with a flawlessly constructed, evenly burning Padilla Reserva 1932 Robusto.",
