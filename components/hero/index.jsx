@@ -1033,7 +1033,7 @@ const Hero = () => {
             </Button>
           </Box>
           <Typography sx={{ margin: "6px 0" }}>
-            Copyright 2023 Atomus Dev
+            Copyright 2024 Atomus Dev
           </Typography>
           <Typography sx={{ margin: "6px 0" }}>Privacy Policy</Typography>
           <Typography sx={{ margin: "6px 0" }}>Terns and Conditions</Typography>
